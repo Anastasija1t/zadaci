@@ -1,0 +1,139 @@
+#include <iostream>
+
+using namespace std;
+
+struct Transaction{
+    int id;
+    int suma;
+    int provizija;
+    bool kreditna;
+};
+int main()
+{
+    
+    int N;
+    cin>>N;
+    Transaction transakcii[N];
+    bool debit=true;
+    
+    for(int i=0;i<N;i++){
+        cin>>transakcii[i].id>>transakcii[i].suma>>transakcii[i].provizija>>transakcii[i].kreditna;
+        if(transakcii[i].kreditna==1){
+        debit=false;
+        cout<<transakcii[i].id<<" "<<transakcii[i].suma+transakcii[i].provizija<<endl;
+        }
+    }
+    if(debit)
+    cout<<"No credit card transaction"<<endl;
+
+    return 0;
+}
+//2
+#include <iostream>
+
+using namespace std;
+
+struct Engine{
+    int horsepower, torque;
+};
+
+struct Car{
+    char proizvoditel[100];
+    int godinaNaProizvodstvo;
+    Engine engine;
+    
+    void print(){
+        cout<<"Manufacturer: "<<proizvoditel<<endl;
+        cout<<"Horsepower: "<<engine.horsepower<<endl;
+        cout<<"Torque: "<<engine.torque<<endl;
+    }
+    void input(){
+        cin>>proizvoditel>>godinaNaProizvodstvo>>engine.horsepower>>engine.torque;
+    }
+};
+
+void printCars(Car *koli,int n){
+    int indexSmallest=0, indexSmallest2=0;
+    for(int i=0;i<n;i++){
+        if(koli[i].engine.horsepower<koli[indexSmallest].engine.horsepower){
+            if(koli[indexSmallest].engine.horsepower<koli[indexSmallest2].engine.horsepower){
+                indexSmallest2=indexSmallest;
+            }
+            indexSmallest=i;
+            
+        }else if(koli[i].engine.horsepower<koli[indexSmallest2].engine.horsepower){
+            indexSmallest2=i;
+        }
+    }
+    
+    if(koli[indexSmallest].engine.torque>koli[indexSmallest2].engine.torque){
+        koli[indexSmallest].print();
+    }else koli[indexSmallest2].print();
+}
+
+int main()
+{
+    
+    int n;
+    cin>>n;
+    Car koli[n];
+    for(int i=0;i<n;i++){
+        koli[i].input();
+    }
+    printCars(koli,n);
+    
+    return 0;
+}
+//3
+#include <iostream>
+
+using namespace std;
+
+struct FootballPlayer{
+    char name[50];
+    int dres, golovi;
+};
+
+struct FootballTeam{
+    char name[100];
+    FootballPlayer igraci[11];
+    int vkupnoGol=0;
+    
+    void input(){
+        cin>>name;
+        for(int i=0;i<11;i++){
+            cin>>igraci[i].name>>igraci[i].dres>>igraci[i].golovi;
+            vkupnoGol+=igraci[i].golovi;
+        }
+    }
+};
+
+
+
+void bestTeam(FootballTeam * teams, int n){
+    //pechati timot so najmnogu dadeni golovi
+    //ako ima dva isti istpecati go prviot vnesen
+    int indexMaxGol=0;
+    int maxGol=0;
+    for(int i=0;i<n;i++){
+        if(teams[i].vkupnoGol>maxGol){
+            maxGol=teams[i].vkupnoGol;
+            indexMaxGol=i;
+        }
+    }
+    cout<<"Najdobar tim e: "<<teams[indexMaxGol].name<<endl;
+}
+
+int main()
+{
+    
+    int n;
+    cin>>n;
+    FootballTeam timovi[n];
+    for(int i=0;i<n;i++){
+        timovi[i].input();
+    }
+    bestTeam(timovi,n);
+    
+    return 0;
+}
