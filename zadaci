@@ -30,58 +30,72 @@ int main()
 }
 //2
 #include <iostream>
-
+#include <cstring>
 using namespace std;
 
-struct Engine{
-    int horsepower, torque;
+struct Engine
+{
+    int hrspwr; //horsepower for car
+    int torque; //torque for car
 };
 
-struct Car{
-    char proizvoditel[100];
-    int godinaNaProizvodstvo;
-    Engine engine;
-    
-    void print(){
-        cout<<"Manufacturer: "<<proizvoditel<<endl;
-        cout<<"Horsepower: "<<engine.horsepower<<endl;
-        cout<<"Torque: "<<engine.torque<<endl;
-    }
-    void input(){
-        cin>>proizvoditel>>godinaNaProizvodstvo>>engine.horsepower>>engine.torque;
-    }
+struct Car
+{
+    char name[20]; //ime na kola
+    int year; //godina na proizvodstvo
+    Engine motor; //motor sto ke referencira od strukturata Engine
 };
 
-void printCars(Car *koli,int n){
-    int indexSmallest=0, indexSmallest2=0;
-    for(int i=0;i<n;i++){
-        if(koli[i].engine.horsepower<koli[indexSmallest].engine.horsepower){
-            if(koli[indexSmallest].engine.horsepower<koli[indexSmallest2].engine.horsepower){
-                indexSmallest2=indexSmallest;
-            }
-            indexSmallest=i;
-            
-        }else if(koli[i].engine.horsepower<koli[indexSmallest2].engine.horsepower){
-            indexSmallest2=i;
+void printCars (Car koli[], int N)
+{
+    int najmal = koli[0].motor.hrspwr; //prva kola so najmalku konjski sili
+    int najmal2 = koli[0].motor.hrspwr; //vtora kola so najmalku konjski sili
+    int indeks1 = 0; //indeks na prvata kola
+    int indeks2 = 0; //indeks na vtorata kola
+    for(int i=0;i<N;i++) //gi izminuvame/proveruvame site koli - ja naogjame prvata kola so najmalku konjski sili
+    {
+        if(koli[i].motor.hrspwr<najmal)
+        {
+            najmal = koli[i].motor.hrspwr;
+            indeks1 = i;
         }
     }
-    
-    if(koli[indexSmallest].engine.torque>koli[indexSmallest2].engine.torque){
-        koli[indexSmallest].print();
-    }else koli[indexSmallest2].print();
+    for(int i=0;i<N;i++) //gi izminuvame/proveruvame site koli - ja naogjame vtorata kola so najmalku konjski sili
+    {
+        if(koli[i].motor.hrspwr<najmal2 && i!=indeks1)
+        {
+            najmal2 = koli[i].motor.hrspwr;
+            indeks2 = i;
+        }
+    }
+    if(koli[indeks1].motor.torque > koli[indeks2].motor.torque)
+    {
+        cout<<"Manufacturer: "<<koli[indeks1].name<<endl;
+        cout<<"Horsepower: "<<koli[indeks1].motor.hrspwr<<endl;
+        cout<<"Torque: "<<koli[indeks1].motor.torque<<endl;
+    }
+    else
+    {
+        cout<<"Manufacturer: "<<koli[indeks2].name<<endl;
+        cout<<"Horsepower: "<<koli[indeks2].motor.hrspwr<<endl;
+        cout<<"Torque: "<<koli[indeks2].motor.torque<<endl;
+    }
 }
 
 int main()
 {
-    
-    int n;
-    cin>>n;
-    Car koli[n];
-    for(int i=0;i<n;i++){
-        koli[i].input();
+    int N; //kolku strukturi ke imame
+    cin>>N; //vnesuvame kolku koli ke vnesuvame vo programata
+    Car koli[N]; //niza od strukturi
+    for(int i=0;i<N;i++) //vnesuvame informacii za kolite
+    {
+        cin>>koli[i].name;
+        cin>>koli[i].year;
+        cin>>koli[i].motor.hrspwr;
+        cin>>koli[i].motor.torque;
+        
     }
-    printCars(koli,n);
-    
+    printCars(koli, N); //se povikuva funkcijata 'printCars'
     return 0;
 }
 //3
